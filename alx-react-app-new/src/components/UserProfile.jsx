@@ -3,14 +3,14 @@ function UserProfile({ name, age, bio }) {
     <div
       style={{
         border: '1px solid #ccc',
-        padding: '12px',
-        margin: '12px 0',
+        padding: '10px',
+        margin: '10px',
         borderRadius: '8px',
         backgroundColor: '#f9fafb',
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
       }}
     >
-      <h2 style={{ color: '#1d4ed8', margin: '0 0 8px' }}>{name}</h2>
+      <h2 style={{ color: 'blue', margin: '0 0 8px' }}>{name}</h2>
       <p style={{ margin: '4px 0' }}>
         Age: <span style={{ fontWeight: 'bold' }}>{age}</span>
       </p>
