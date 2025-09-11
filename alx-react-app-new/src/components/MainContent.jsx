@@ -10,6 +10,7 @@ function MainContent() {
         backgroundColor: '#ffffff',
       }}
     >
+      <p style={{ margin: '0 0 12px', color: '#1f2937' }}>I love to visit New York, Paris, and Tokyo.</p>
       <section style={{ marginBottom: '16px' }}>
         <h2 style={{ margin: '0 0 8px', color: '#111827' }}>Featured Users</h2>
         <UserProfile name="Alice Johnson" age={29} bio="Software engineer who loves hiking and photography." />
