@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import './App.css';
 import RecipeList from './components/RecipeList';
 import AddRecipeForm from './components/AddRecipeForm';
@@ -65,31 +65,34 @@ function App() {
 
   return (
     <Router>
-      <div className="app">
-        <header className="app-header">
-          <Link to="/" className="no-underline">
-            <h1 className="text-4xl font-bold text-white mb-2">🍳 Recipe Sharing App</h1>
-          </Link>
-          <p className="text-lg text-gray-200">Share and discover delicious recipes</p>
+      <div className="app min-h-screen flex flex-col">
+        <header className="app-header py-6">
+          <div className="container mx-auto px-4">
+            <Link to="/" className="no-underline">
+              <h1 className="text-4xl font-bold text-white mb-2">🍳 Recipe Sharing App</h1>
+            </Link>
+            <p className="text-lg text-gray-200">Share and discover delicious recipes</p>
+          </div>
         </header>
         
-        <main className="app-content py-8">
+        <main className="flex-grow bg-gray-50 py-8">
           <div className="container mx-auto px-4">
             <Routes>
               <Route path="/" element={
-                <>
-                  <div className="mb-8">
+                <div className="space-y-8">
+                  <div className="bg-white p-6 rounded-lg shadow-md">
                     <h2 className="text-2xl font-bold mb-4">Add New Recipe</h2>
                     <AddRecipeForm />
                   </div>
-                  <div>
-                    <h2 className="text-2xl font-bold mb-4">Recipes</h2>
+                  <div className="bg-white p-6 rounded-lg shadow-md">
+                    <h2 className="text-2xl font-bold mb-4">Browse Recipes</h2>
                     <RecipeList />
                   </div>
-                </>
+                </div>
               } />
               <Route path="/recipe/:id" element={<RecipeDetails />} />
               <Route path="/edit/:id" element={<EditRecipeForm />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>
         </main>
