@@ -1,12 +1,42 @@
-# React + Vite
+# Recipe Sharing App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React application for sharing and managing recipes, built with Vite and Zustand for state management.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Add new recipes with title, description, and ingredients
+- View all recipes in a responsive grid layout
+- Remove recipes you no longer need
+- Sample recipes included by default
+- Responsive design that works on all devices
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React 18
+- Vite 4
+- Zustand (State Management)
+- CSS3 (with CSS Variables for theming)
+- HTML5
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
+
+## Project Structure
+
+- `/src/components` - Reusable React components
+- `/src/store` - Zustand store configuration
+- `/public` - Static assets
+
+## License
+
+MIT
