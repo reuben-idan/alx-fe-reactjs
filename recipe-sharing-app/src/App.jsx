@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, NavLink } from 'react-router-dom';
 import './App.css';
 import RecipeList from './components/RecipeList';
 import AddRecipeForm from './components/AddRecipeForm';
 import RecipeDetails from './components/RecipeDetails';
 import EditRecipeForm from './components/EditRecipeForm';
-import { useRecipeStore } from './components/recipeStore';
+import FavoritesList from './components/FavoritesList';
+import { useRecipeStore } from './store/recipeStore';
 
 function App() {
   const setRecipes = useRecipeStore((state) => state.setRecipes);
@@ -70,10 +71,33 @@ function App() {
       <div className="app min-h-screen flex flex-col">
         <header className="app-header py-6">
           <div className="container mx-auto px-4">
-            <Link to="/" className="no-underline">
-              <h1 className="text-4xl font-bold text-white mb-2">🍳 Recipe Sharing App</h1>
-            </Link>
-            <p className="text-lg text-gray-200">Share and discover delicious recipes</p>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+              <Link to="/" className="no-underline">
+                <h1 className="text-4xl font-bold text-white mb-2">🍳 Recipe Sharing App</h1>
+              </Link>
+              <p className="text-lg text-gray-200">Share and discover delicious recipes</p>
+            </div>
+            <nav className="mt-4 flex space-x-4">
+              <NavLink 
+                to="/" 
+                className={({ isActive }) => 
+                  `px-3 py-2 rounded-md text-sm font-medium ${isActive ? 'bg-white/20 text-white' : 'text-gray-200 hover:bg-white/10'}`
+                }
+              >
+                Home
+              </NavLink>
+              <NavLink 
+                to="/favorites" 
+                className={({ isActive }) => 
+                  `px-3 py-2 rounded-md text-sm font-medium flex items-center ${isActive ? 'bg-white/20 text-white' : 'text-gray-200 hover:bg-white/10'}`
+                }
+              >
+                <svg className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                Favorites
+              </NavLink>
+            </nav>
           </div>
         </header>
         
@@ -93,6 +117,11 @@ function App() {
               } />
               <Route path="/recipe/:id" element={<RecipeDetails />} />
               <Route path="/edit/:id" element={<EditRecipeForm />} />
+              <Route path="/favorites" element={
+                <div className="space-y-8">
+                  <FavoritesList />
+                </div>
+              } />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>

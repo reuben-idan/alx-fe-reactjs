@@ -41,30 +41,20 @@ const RecipeList = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recipes.map((recipe) => (
-                <RecipeCard key={recipe.id} recipe={recipe} />
+                <RecipeCard 
+                  key={recipe.id} 
+                  recipe={recipe}
+                  onDelete={() => {
+                    if (window.confirm('Are you sure you want to delete this recipe?')) {
+                      removeRecipe(recipe.id);
+                    }
+                  }}
+                />
               ))}
             </div>
           )}
         </div>
       </div>
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (window.confirm('Are you sure you want to delete this recipe?')) {
-                          removeRecipe(recipe.id);
-                        }
-                      }}
-                      className="text-sm text-red-500 hover:text-red-700"
-                      title="Delete recipe"
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
