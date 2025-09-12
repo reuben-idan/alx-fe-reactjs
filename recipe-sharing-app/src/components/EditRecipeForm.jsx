@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import useRecipeStore from '../store/recipeStore';
 
-const AddRecipeForm = () => {
-  const addRecipe = useRecipeStore((state) => state.addRecipe);
+const EditRecipeForm = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const { recipes, updateRecipe } = useRecipeStore();
   
   const [formData, setFormData] = useState({
     title: '',
@@ -21,12 +22,32 @@ const AddRecipeForm = () => {
   
   const [error, setError] = useState('');
 
+  // Load recipe data when component mounts
+  useEffect(() => {
+    const recipe = recipes.find(r => r.id === Number(id));
+    if (recipe) {
+      setFormData({
+        title: recipe.title || '',
+        description: recipe.description || '',
+        ingredients: recipe.ingredients.length > 0 ? [...recipe.ingredients, ''] : [''],
+        instructions: recipe.instructions.length > 0 ? [...recipe.instructions, ''] : [''],
+        prepTime: recipe.prepTime || '',
+        cookTime: recipe.cookTime || '',
+        servings: recipe.servings || '',
+        cuisine: recipe.cuisine || '',
+        image: recipe.image || ''
+      });
+    } else {
+      navigate('/');
+    }
+  }, [id, recipes, navigate]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
-    }));
+    }));  
   };
   
   const handleIngredientChange = (index, value) => {
@@ -107,36 +128,37 @@ const AddRecipeForm = () => {
     }
     
     // Filter out empty ingredients and instructions
-    const newRecipe = {
+    const updatedRecipe = {
       ...formData,
+      id: Number(id),
       ingredients: formData.ingredients.filter(ing => ing.trim() !== ''),
       instructions: formData.instructions.filter(inst => inst.trim() !== '')
     };
     
-    if (newRecipe.ingredients.length === 0) {
+    if (updatedRecipe.ingredients.length === 0) {
       setError('Please add at least one ingredient');
       return;
     }
     
-    if (newRecipe.instructions.length === 0) {
+    if (updatedRecipe.instructions.length === 0) {
       setError('Please add at least one instruction');
       return;
     }
 
-    // Add the recipe
-    addRecipe(newRecipe);
+    // Update the recipe
+    updateRecipe(Number(id), updatedRecipe);
     
-    // Redirect to home page
-    navigate('/');
+    // Redirect to recipe details
+    navigate(`/recipe/${id}`);
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Add New Recipe</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Edit Recipe</h1>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate(-1)}
             className="text-gray-500 hover:text-gray-700"
           >
             <XMarkIcon className="h-6 w-6" />
@@ -328,7 +350,7 @@ const AddRecipeForm = () => {
           <div className="flex justify-end space-x-4">
             <button
               type="button"
-              onClick={() => navigate('/')}
+              onClick={() => navigate(-1)}
               className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
             >
               Cancel
@@ -337,7 +359,7 @@ const AddRecipeForm = () => {
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              Add Recipe
+              Update Recipe
             </button>
           </div>
         </form>
@@ -346,4 +368,4 @@ const AddRecipeForm = () => {
   );
 };
 
-export default AddRecipeForm;
+export default EditRecipeForm;
