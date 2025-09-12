@@ -98,8 +98,8 @@ const EditRecipeForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     
     // Filter out empty ingredients and instructions
     const updatedRecipe = {
