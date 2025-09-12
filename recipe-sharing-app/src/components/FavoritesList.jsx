@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRecipeStore } from '../store/recipeStore';
+import { useRecipeStore } from './recipeStore';
 import { Link } from 'react-router-dom';
 import RecipeCard from './RecipeCard';
 import { toast } from 'react-toastify';
@@ -14,28 +14,12 @@ const FavoritesList = () => {
   } = useRecipeStore();
   
   const favoriteRecipes = useRecipeStore(state => state.getFavoriteRecipes() || []);
-
-  // Handle favorite toggle
-  const handleToggleFavorite = (recipeId) => {
-    try {
-      toggleFavorite(recipeId);
-      if (!isFavorite(recipeId)) {
-        toast.success('Removed from favorites');
-      } else {
-        toast.success('Added to favorites');
-      }
-    } catch (error) {
-      console.error('Error toggling favorite:', error);
-      toast.error('Failed to update favorites');
-    }
-  };
   
+  // Load favorites when component mounts
   useEffect(() => {
     const loadFavorites = async () => {
       try {
-        setIsLoading(true);
-        // Force a re-render when favorites change
-        const favs = getFavoriteRecipes();
+        await getFavoriteRecipes();
       } catch (error) {
         console.error('Error loading favorites:', error);
         toast.error('Failed to load favorites');
@@ -47,6 +31,17 @@ const FavoritesList = () => {
     loadFavorites();
   }, [favorites, getFavoriteRecipes]);
   
+  const handleToggleFavorite = (recipeId) => {
+    try {
+      toggleFavorite(recipeId);
+      const isFav = isFavorite(recipeId);
+      toast.success(isFav ? 'Removed from favorites' : 'Added to favorites');
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      toast.error('Failed to update favorites');
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
@@ -54,7 +49,6 @@ const FavoritesList = () => {
       </div>
     );
   }
-
 
   if (favoriteRecipes.length === 0) {
     return (
@@ -69,7 +63,7 @@ const FavoritesList = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={1}
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 19.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 6.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 19.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
           />
         </svg>
         <h3 className="mt-2 text-lg font-medium text-gray-900">No favorites yet</h3>
@@ -104,20 +98,20 @@ const FavoritesList = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">My Favorite Recipes</h2>
+        <h1 className="text-3xl font-bold text-gray-900">My Favorites</h1>
         <span className="text-gray-600">
-          {favoriteRecipes.length} {favoriteRecipes.length === 1 ? 'recipe' : 'recipes'}
+          {favoriteRecipes.length} {favoriteRecipes.length === 1 ? 'recipe' : 'recipes'} saved
         </span>
       </div>
-
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {favoriteRecipes.map((recipe) => (
           <RecipeCard 
             key={recipe.id} 
             recipe={recipe} 
             onToggleFavorite={handleToggleFavorite}
-            isFavorite={true}
-            onDelete={null}
+            isFavorite={isFavorite(recipe.id)}
+            showFavorite={true}
           />
         ))}
       </div>
