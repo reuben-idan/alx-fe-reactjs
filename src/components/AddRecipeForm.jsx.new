@@ -301,15 +301,6 @@ const AddRecipeForm = () => {
           </button>
         </div>
       </form>
-    </div>            placeholder="Enter ingredients separated by commas"
-            rows="3"
-          />
-        </div>
-        
-        <button type="submit" className="submit-btn">
-          Add Recipe
-        </button>
-      </form>
     </div>
   );
 };

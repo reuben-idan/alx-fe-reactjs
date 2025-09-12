@@ -1,24 +1,52 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useRecipeStore } from './recipeStore';
 
-const AddRecipeForm = () => {
-  const addRecipe = useRecipeStore((state) => state.addRecipe);
+const EditRecipeForm = () => {
+  const { id } = useParams();
+  const recipeId = parseInt(id);
   const navigate = useNavigate();
+  const { recipes, updateRecipe } = useRecipeStore();
   
+  // Find the recipe to edit
+  const recipeToEdit = recipes.find(r => r.id === recipeId);
+  
+  // Initialize form state with recipe data or empty values
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    ingredients: [''],
-    instructions: [''],
+    ingredients: ['', '', '', '', ''],
+    instructions: ['', '', ''],
     prepTime: '',
     cookTime: '',
     servings: '',
     cuisine: '',
     image: ''
   });
-  
-  const [error, setError] = useState('');
+
+  // Populate form when component mounts or recipeToEdit changes
+  useEffect(() => {
+    if (recipeToEdit) {
+      setFormData({
+        title: recipeToEdit.title || '',
+        description: recipeToEdit.description || '',
+        ingredients: recipeToEdit.ingredients?.length > 0 
+          ? [...recipeToEdit.ingredients, ''] 
+          : ['', '', '', '', ''],
+        instructions: recipeToEdit.instructions?.length > 0 
+          ? [...recipeToEdit.instructions, ''] 
+          : ['', '', ''],
+        prepTime: recipeToEdit.prepTime || '',
+        cookTime: recipeToEdit.cookTime || '',
+        servings: recipeToEdit.servings || '',
+        cuisine: recipeToEdit.cuisine || '',
+        image: recipeToEdit.image || ''
+      });
+    } else {
+      // Redirect if recipe not found
+      navigate('/');
+    }
+  }, [recipeToEdit, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,66 +101,32 @@ const AddRecipeForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (!formData.title.trim()) {
-      setError('Recipe title is required');
-      return;
-    }
-
     // Filter out empty ingredients and instructions
-    const newRecipe = {
+    const updatedRecipe = {
       ...formData,
       ingredients: formData.ingredients.filter(ing => ing.trim() !== ''),
       instructions: formData.instructions.filter(inst => inst.trim() !== '')
     };
     
-    if (newRecipe.ingredients.length === 0) {
-      setError('Please add at least one ingredient');
-      return;
-    }
+    // Update the recipe in the store
+    updateRecipe(recipeId, updatedRecipe);
     
-    if (newRecipe.instructions.length === 0) {
-      setError('Please add at least one instruction');
-      return;
-    }
-
-    // Add the new recipe
-    addRecipe(newRecipe);
-    
-    // Reset form
-    setFormData({
-      title: '',
-      description: '',
-      ingredients: [''],
-      instructions: [''],
-      prepTime: '',
-      cookTime: '',
-      servings: '',
-      cuisine: '',
-      image: ''
-    });
-    
-    setError('');
-    
-    // Show success message and redirect
-    alert('Recipe added successfully!');
-    navigate('/');
+    // Redirect to the recipe details page
+    navigate(`/recipe/${recipeId}`);
   };
 
+  if (!recipeToEdit) {
+    return <div className="p-4">Loading recipe...</div>;
+  }
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Add New Recipe</h2>
-      
-      {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
-          <p className="font-bold">Error</p>
-          <p>{error}</p>
-        </div>
-      )}
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Edit Recipe</h1>
       
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Information */}
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">Basic Information</h3>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
             <div>
@@ -147,7 +141,6 @@ const AddRecipeForm = () => {
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
-                placeholder="e.g., Spaghetti Carbonara"
               />
             </div>
             
@@ -247,8 +240,8 @@ const AddRecipeForm = () => {
         </div>
         
         {/* Ingredients */}
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">Ingredients</h3>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
           {formData.ingredients.map((ingredient, index) => (
             <div key={index} className="mb-2">
               <div className="flex items-center">
@@ -266,8 +259,8 @@ const AddRecipeForm = () => {
         </div>
         
         {/* Instructions */}
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">Instructions</h3>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">Instructions</h2>
           {formData.instructions.map((instruction, index) => (
             <div key={index} className="mb-4">
               <label className="block text-gray-700 mb-1">
@@ -288,7 +281,7 @@ const AddRecipeForm = () => {
         <div className="flex justify-end space-x-4">
           <button
             type="button"
-            onClick={() => navigate('/')}
+            onClick={() => navigate(-1)}
             className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
           >
             Cancel
@@ -297,21 +290,12 @@ const AddRecipeForm = () => {
             type="submit"
             className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Add Recipe
+            Update Recipe
           </button>
         </div>
-      </form>
-    </div>            placeholder="Enter ingredients separated by commas"
-            rows="3"
-          />
-        </div>
-        
-        <button type="submit" className="submit-btn">
-          Add Recipe
-        </button>
       </form>
     </div>
   );
 };
 
-export default AddRecipeForm;
+export default EditRecipeForm;
