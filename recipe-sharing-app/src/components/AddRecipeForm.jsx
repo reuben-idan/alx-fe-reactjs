@@ -6,30 +6,34 @@ const AddRecipeForm = () => {
   const addRecipe = useRecipeStore((state) => state.addRecipe);
   const navigate = useNavigate();
   
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    ingredients: [''],
-    instructions: [''],
-    prepTime: '',
-    cookTime: '',
-    servings: '',
-    cuisine: '',
-    image: ''
-  });
+    const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [ingredients, setIngredients] = useState(['']);
+  const [instructions, setInstructions] = useState(['']);
+  const [prepTime, setPrepTime] = useState('');
+  const [cookTime, setCookTime] = useState('');
+  const [servings, setServings] = useState('');
+  const [cuisine, setCuisine] = useState('');
+  const [image, setImage] = useState('');
   
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    switch(name) {
+      case 'title': setTitle(value); break;
+      case 'description': setDescription(value); break;
+      case 'prepTime': setPrepTime(value); break;
+      case 'cookTime': setCookTime(value); break;
+      case 'servings': setServings(value); break;
+      case 'cuisine': setCuisine(value); break;
+      case 'image': setImage(value); break;
+      default: break;
+    }
   };
 
   const handleIngredientChange = (index, value) => {
-    const newIngredients = [...formData.ingredients];
+    const newIngredients = [...ingredients];
     newIngredients[index] = value;
     
     // Add a new empty field if this is the last one and it's not empty
@@ -43,14 +47,11 @@ const AddRecipeForm = () => {
       newIngredients.pop();
     }
     
-    setFormData(prev => ({
-      ...prev,
-      ingredients: newIngredients
-    }));
+    setIngredients(newIngredients);
   };
 
   const handleInstructionChange = (index, value) => {
-    const newInstructions = [...formData.instructions];
+    const newInstructions = [...instructions];
     newInstructions[index] = value;
     
     // Add a new empty field if this is the last one and it's not empty
@@ -64,25 +65,28 @@ const AddRecipeForm = () => {
       newInstructions.pop();
     }
     
-    setFormData(prev => ({
-      ...prev,
-      instructions: newInstructions
-    }));
+    setInstructions(newInstructions);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (!formData.title.trim()) {
+    if (!title.trim()) {
       setError('Recipe title is required');
       return;
     }
 
     // Filter out empty ingredients and instructions
     const newRecipe = {
-      ...formData,
-      ingredients: formData.ingredients.filter(ing => ing.trim() !== ''),
-      instructions: formData.instructions.filter(inst => inst.trim() !== '')
+      title,
+      description,
+      ingredients: ingredients.filter(ing => ing.trim() !== ''),
+      instructions: instructions.filter(inst => inst.trim() !== ''),
+      prepTime,
+      cookTime,
+      servings,
+      cuisine,
+      image
     };
     
     if (newRecipe.ingredients.length === 0) {
