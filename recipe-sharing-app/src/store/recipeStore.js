@@ -32,13 +32,11 @@ const generateRecommendations = (recipes, favorites) => {
 };
 
 export const useRecipeStore = create((set, get) => ({
-  // Recipes state
+  // State
   recipes: [],
-  
-  // Favorites state
   favorites: JSON.parse(localStorage.getItem('recipeFavorites') || '[]'),
   
-  // Recipe actions
+  // Actions
   addRecipe: (newRecipe) => 
     set((state) => ({ 
       recipes: [...state.recipes, { ...newRecipe, id: Date.now() }] 
@@ -49,11 +47,10 @@ export const useRecipeStore = create((set, get) => ({
   removeRecipe: (id) =>
     set((state) => ({
       recipes: state.recipes.filter((recipe) => recipe.id !== id),
-      // Also remove from favorites if it was favorited
       favorites: state.favorites.filter(favId => favId !== id)
     })),
   
-  // Favorites actions
+  // Favorites
   addFavorite: (recipeId) =>
     set((state) => {
       const updatedFavorites = [...state.favorites, recipeId];
@@ -89,9 +86,22 @@ export const useRecipeStore = create((set, get) => ({
     return generateRecommendations(recipes, favorites);
   },
   
-  // Get favorite recipes
+  // Favorites
   getFavoriteRecipes: () => {
     const { recipes, favorites } = get();
     return findRecipesByIds(recipes, favorites);
+  },
+  
+  // Filter recipes by search term
+  filterRecipes: (searchTerm) => {
+    const { recipes } = get();
+    if (!searchTerm) return recipes;
+    
+    const term = searchTerm.toLowerCase();
+    return recipes.filter(recipe => 
+      recipe.title.toLowerCase().includes(term) ||
+      recipe.description.toLowerCase().includes(term) ||
+      recipe.cuisine.toLowerCase().includes(term)
+    );
   }
 }));

@@ -3,10 +3,25 @@ import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import RecipeCard from './RecipeCard';
 import RecommendationsList from './RecommendationsList';
+import { toast } from 'react-toastify';
 
 const RecipeList = () => {
-  const { removeRecipe } = useRecipeStore();
-  const recipes = useRecipeStore((state) => state.getFilteredRecipes());
+  const { removeRecipe, toggleFavorite, isFavorite } = useRecipeStore();
+  const recipes = useRecipeStore((state) => state.recipes);
+  
+  const handleToggleFavorite = (recipeId) => {
+    try {
+      toggleFavorite(recipeId);
+      if (!isFavorite(recipeId)) {
+        toast.success('Added to favorites');
+      } else {
+        toast.success('Removed from favorites');
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      toast.error('Failed to update favorites');
+    }
+  };
 
   return (
     <div className="space-y-12">
@@ -43,8 +58,11 @@ const RecipeList = () => {
               {recipes.map((recipe) => (
                 <RecipeCard 
                   key={recipe.id} 
-                  recipe={recipe}
-                  onDelete={(id) => removeRecipe(id)}
+                  recipe={recipe} 
+                  onDelete={removeRecipe}
+                  onToggleFavorite={handleToggleFavorite}
+                  isFavorite={isFavorite(recipe.id)}
+                  showFavorite={true}
                 />
               ))}
             </div>

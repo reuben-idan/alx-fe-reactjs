@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRecipeStore } from './store/recipeStore';
+import { useRecipeStore } from '../store/recipeStore';
 import { Link } from 'react-router-dom';
 
 const RecommendationsList = () => {

@@ -2,15 +2,27 @@ import { useEffect } from 'react';
 import { useRecipeStore } from '../store/recipeStore';
 import { Link } from 'react-router-dom';
 import RecipeCard from './RecipeCard';
+import { toast } from 'react-toastify';
 
 const FavoritesList = () => {
-  const { getFavoriteRecipes, toggleFavorite } = useRecipeStore();
-  const favoriteRecipes = useRecipeStore(state => state.getFavoriteRecipes());
+  const { getFavoriteRecipes, toggleFavorite, isFavorite } = useRecipeStore();
   const favorites = useRecipeStore(state => state.favorites);
+  const favoriteRecipes = useRecipeStore(state => state.getFavoriteRecipes());
 
-  useEffect(() => {
-    // This effect ensures the component updates when favorites change
-  }, [favorites]);
+  // Handle favorite toggle
+  const handleToggleFavorite = (recipeId) => {
+    try {
+      toggleFavorite(recipeId);
+      if (!isFavorite(recipeId)) {
+        toast.success('Removed from favorites');
+      } else {
+        toast.success('Added to favorites');
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      toast.error('Failed to update favorites');
+    }
+  };
 
   if (favoriteRecipes.length === 0) {
     return (
@@ -57,7 +69,9 @@ const FavoritesList = () => {
           <RecipeCard 
             key={recipe.id} 
             recipe={recipe} 
-            onDelete={null} // Disable delete in favorites
+            onToggleFavorite={handleToggleFavorite}
+            isFavorite={true}
+            onDelete={null}
           />
         ))}
       </div>

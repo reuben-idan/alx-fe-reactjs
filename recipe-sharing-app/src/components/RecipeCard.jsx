@@ -1,12 +1,21 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useRecipeStore } from './store/recipeStore';
+import PropTypes from 'prop-types';
 
-const RecipeCard = ({ recipe, onDelete }) => {
+const RecipeCard = ({ 
+  recipe, 
+  onDelete, 
+  onToggleFavorite, 
+  isFavorite: isFavoriteProp,
+  showFavorite = true
+}) => {
   const location = useLocation();
-  const { toggleFavorite, isFavorite } = useRecipeStore();
-  const favorite = isFavorite(recipe.id);
   const isEditPage = location.pathname.includes('/edit');
   const isFavoritesPage = location.pathname === '/favorites';
+  
+  // Determine if the recipe is a favorite
+  const isFavorite = typeof isFavoriteProp === 'boolean' 
+    ? isFavoriteProp 
+    : false;
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -17,31 +26,37 @@ const RecipeCard = ({ recipe, onDelete }) => {
             alt={recipe.title}
             className="w-full h-48 object-cover"
           />
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleFavorite(recipe.id);
-            }}
-            className={`absolute top-2 right-2 p-2 rounded-full ${
-              favorite ? 'bg-red-100 text-red-500' : 'bg-white/80 text-gray-400 hover:text-red-500'
-            } hover:bg-red-50 transition-colors`}
-            aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
-          >
-            <svg
-              className="h-6 w-6"
-              fill={favorite ? 'currentColor' : 'none'}
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
+          {showFavorite && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (onToggleFavorite) {
+                  onToggleFavorite(recipe.id);
+                }
+              }}
+              className={`absolute top-2 right-2 p-2 rounded-full ${
+                isFavorite 
+                  ? 'bg-red-100 text-red-500 hover:bg-red-200' 
+                  : 'bg-white/80 text-gray-400 hover:text-red-500 hover:bg-white'
+              } transition-colors`}
+              aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-          </button>
+              <svg
+                className="h-6 w-6"
+                fill={isFavorite ? 'currentColor' : 'none'}
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            </button>
+          )}
         </div>
       )}
       
@@ -121,6 +136,23 @@ const RecipeCard = ({ recipe, onDelete }) => {
       </div>
     </div>
   );
+};
+
+RecipeCard.propTypes = {
+  recipe: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    cuisine: PropTypes.string,
+    prepTime: PropTypes.number,
+    servings: PropTypes.number,
+    rating: PropTypes.number,
+    image: PropTypes.string
+  }).isRequired,
+  onDelete: PropTypes.func,
+  onToggleFavorite: PropTypes.func,
+  isFavorite: PropTypes.bool,
+  showFavorite: PropTypes.bool
 };
 
 export default RecipeCard;
