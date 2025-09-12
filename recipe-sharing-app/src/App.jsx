@@ -28,10 +28,11 @@ function App() {
           'Add pasta water a tablespoon at a time if needed to loosen the sauce.',
           'Season with black pepper and serve immediately.'
         ],
-        prepTime: '10 mins',
-        cookTime: '15 mins',
+        prepTime: '10',
+        cookTime: '15',
         servings: 2,
         cuisine: 'Italian',
+        rating: 4.5,
         image: 'https://images.unsplash.com/photo-1612874742237-6526224048f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
       },
       {
@@ -48,10 +49,11 @@ function App() {
           'Drizzle with sesame oil and toss again.',
           'Garnish with sesame seeds and serve hot with rice or noodles.'
         ],
-        prepTime: '15 mins',
-        cookTime: '10 mins',
+        prepTime: '15',
+        cookTime: '10',
         servings: 4,
         cuisine: 'Asian',
+        rating: 4.0,
         image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
       }
     ];
@@ -84,8 +86,7 @@ function App() {
                     <h2 className="text-2xl font-bold mb-4">Add New Recipe</h2>
                     <AddRecipeForm />
                   </div>
-                  <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-2xl font-bold mb-4">Browse Recipes</h2>
+                  <div className="space-y-6">
                     <RecipeList />
                   </div>
                 </div>

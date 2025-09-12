@@ -1,40 +1,20 @@
-import { useState, useEffect } from 'react';
 import { useRecipeStore } from './recipeStore';
 import { Link } from 'react-router-dom';
+import SearchBar from './SearchBar';
 
 const RecipeList = () => {
-  const { removeRecipe, setSearchTerm, getFilteredRecipes } = useRecipeStore();
-  const [searchInput, setSearchInput] = useState('');
-  const recipes = useRecipeStore(getFilteredRecipes);
-
-  // Debounce search input
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSearchTerm(searchInput);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchInput, setSearchTerm]);
+  const { removeRecipe } = useRecipeStore();
+  const recipes = useRecipeStore((state) => state.getFilteredRecipes());
 
   return (
     <div className="space-y-6">
-      <div className="mb-6">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search recipes..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full p-3 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-        </div>
-      </div>
+      <SearchBar />
 
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">Recipes</h2>
+        <span className="text-gray-600">{recipes.length} {recipes.length === 1 ? 'recipe' : 'recipes'} found</span>
+      </div>
+      
       {recipes.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg shadow">
           <p className="text-gray-600 mb-4">No recipes yet. Add your first recipe to get started!</p>
