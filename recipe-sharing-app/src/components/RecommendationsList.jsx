@@ -1,24 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useRecipeStore } from '../store/recipeStore';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import RecipeCard from './RecipeCard';
 
 const RecommendationsList = () => {
-  const [recommendations, setRecommendations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { getRecommendations, toggleFavorite, favorites } = useRecipeStore();
+  const { 
+    getRecommendations, 
+    getRecommendationsList, 
+    toggleFavorite, 
+    isFavorite,
+    favorites 
+  } = useRecipeStore();
+  
+  const recommendations = useRecipeStore(state => state.recommendations || []);
 
   useEffect(() => {
-    // Load recommendations when component mounts or favorites change
-    const loadRecommendations = () => {
-      setIsLoading(true);
-      // Small delay to show loading state (optional)
-      const timer = setTimeout(() => {
-        const recs = getRecommendations();
-        setRecommendations(recs);
+    const loadRecommendations = async () => {
+      try {
+        setIsLoading(true);
+        await getRecommendations();
+      } catch (error) {
+        console.error('Error loading recommendations:', error);
+        toast.error('Failed to load recommendations');
+      } finally {
         setIsLoading(false);
-      }, 300);
-      
-      return () => clearTimeout(timer);
+      }
     };
     
     loadRecommendations();
@@ -60,7 +68,7 @@ const RecommendationsList = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Recommended For You</h2>
         <span className="text-gray-600">
           Based on your favorites
@@ -69,56 +77,13 @@ const RecommendationsList = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {recommendations.map((recipe) => (
-          <div key={recipe.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-            {recipe.image && (
-              <img
-                src={recipe.image}
-                alt={recipe.title}
-                className="w-full h-48 object-cover"
-              />
-            )}
-            <div className="p-4">
-              <div className="flex justify-between items-start">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  <Link to={`/recipe/${recipe.id}`} className="hover:text-blue-600">
-                    {recipe.title}
-                  </Link>
-                </h3>
-                <button
-                  onClick={() => toggleFavorite(recipe.id)}
-                  className="text-gray-300 hover:text-red-500 focus:outline-none"
-                  aria-label="Add to favorites"
-                >
-                  <svg
-                    className="h-6 w-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <p className="text-gray-600 text-sm mb-2">{recipe.cuisine}</p>
-              <p className="text-gray-700 mb-4 line-clamp-2">{recipe.description}</p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">
-                  {recipe.prepTime} min • {recipe.servings} servings
-                </span>
-                <Link
-                  to={`/recipe/${recipe.id}`}
-                  className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                >
-                  View Recipe →
-                </Link>
-              </div>
-            </div>
-          </div>
+          <RecipeCard 
+            key={recipe.id}
+            recipe={recipe}
+            onToggleFavorite={toggleFavorite}
+            isFavorite={isFavorite(recipe.id)}
+            showFavorite={true}
+          />
         ))}
       </div>
     </div>

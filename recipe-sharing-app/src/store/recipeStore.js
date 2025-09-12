@@ -31,10 +31,12 @@ const generateRecommendations = (recipes, favorites) => {
     .slice(0, 3);
 };
 
+// Create the store
 export const useRecipeStore = create((set, get) => ({
   // State
   recipes: [],
   favorites: JSON.parse(localStorage.getItem('recipeFavorites') || '[]'),
+  recommendations: [],
   
   // Actions
   addRecipe: (newRecipe) => 
@@ -83,13 +85,34 @@ export const useRecipeStore = create((set, get) => ({
   // Recommendations
   getRecommendations: () => {
     const { recipes, favorites } = get();
-    return generateRecommendations(recipes, favorites);
+    const recommendations = generateRecommendations(recipes, favorites);
+    set({ recommendations });
+    return recommendations;
+  },
+  
+  // Get recommendations
+  getRecommendationsList: () => {
+    const { recommendations } = get();
+    return recommendations;
   },
   
   // Favorites
   getFavoriteRecipes: () => {
     const { recipes, favorites } = get();
     return findRecipesByIds(recipes, favorites);
+  },
+  
+  // Get filtered recipes
+  getFilteredRecipes: (searchTerm) => {
+    const { recipes } = get();
+    if (!searchTerm) return recipes;
+    
+    const term = searchTerm.toLowerCase();
+    return recipes.filter(recipe => 
+      recipe.title.toLowerCase().includes(term) ||
+      recipe.description?.toLowerCase().includes(term) ||
+      recipe.cuisine?.toLowerCase().includes(term)
+    );
   },
   
   // Filter recipes by search term
