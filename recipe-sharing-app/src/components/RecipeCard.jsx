@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useRecipeStore } from './store/recipeStore';
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, onDelete }) => {
+  const location = useLocation();
   const { toggleFavorite, isFavorite } = useRecipeStore();
   const favorite = isFavorite(recipe.id);
+  const isEditPage = location.pathname.includes('/edit');
+  const isFavoritesPage = location.pathname === '/favorites';
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -30,11 +33,11 @@ const RecipeCard = ({ recipe }) => {
               fill={favorite ? 'currentColor' : 'none'}
               viewBox="0 0 24 24"
               stroke="currentColor"
+              strokeWidth="2"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
               />
             </svg>
@@ -49,6 +52,37 @@ const RecipeCard = ({ recipe }) => {
               {recipe.title}
             </Link>
           </h3>
+          
+          {/* Edit and Delete buttons (only show on homepage) */}
+          {!isEditPage && !isFavoritesPage && (
+            <div className="flex space-x-2">
+              <Link
+                to={`/edit/${recipe.id}`}
+                className="text-blue-600 hover:text-blue-800"
+                aria-label="Edit recipe"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+              </Link>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (window.confirm('Are you sure you want to delete this recipe?')) {
+                    onDelete && onDelete(recipe.id);
+                  }
+                }}
+                className="text-red-600 hover:text-red-800"
+                aria-label="Delete recipe"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
         
         {recipe.cuisine && (

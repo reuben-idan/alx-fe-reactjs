@@ -1,4 +1,4 @@
-import { useRecipeStore } from './store/recipeStore';
+import { useRecipeStore } from '../store/recipeStore';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import RecipeCard from './RecipeCard';
@@ -44,11 +44,7 @@ const RecipeList = () => {
                 <RecipeCard 
                   key={recipe.id} 
                   recipe={recipe}
-                  onDelete={() => {
-                    if (window.confirm('Are you sure you want to delete this recipe?')) {
-                      removeRecipe(recipe.id);
-                    }
-                  }}
+                  onDelete={(id) => removeRecipe(id)}
                 />
               ))}
             </div>
