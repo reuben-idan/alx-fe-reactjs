@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { setupCache } from 'axios-cache-interceptor';
 
-const GITHUB_API_URL = 'https://api.github.com';
-const USERS_ENDPOINT = '/search/users';
-const USER_DETAILS_ENDPOINT = '/users';
+const GITHUB_API_URL = 'https://api.github.com/search/users?q';
+const USER_DETAILS_ENDPOINT = 'https://api.github.com/users';
 
 // Default rate limit values (will be updated from response headers)
 let rateLimitRemaining = 60;
