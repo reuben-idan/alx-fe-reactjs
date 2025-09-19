@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { FiSearch, FiMapPin, FiCode, FiUsers, FiChevronDown, FiChevronUp, FiGithub } from 'react-icons/fi';
 import { searchUsers } from '../services/githubService';
 import UserCard from './UserCard';
@@ -8,8 +8,7 @@ const POPULAR_LANGUAGES = [
   '', // Empty option for no language filter
   'JavaScript', 'TypeScript', 'Python', 'Java', 'C#', 'PHP', 'C++', 'C', 'Go',
   'Ruby', 'Swift', 'Kotlin', 'Rust', 'Dart', 'Scala', 'R', 'Objective-C', 'Shell',
-  'PowerShell', 'Perl', 'Lua', 'Haskell', 'Clojure', 'Elixir', 'Erlang', 'Rust',
-  'Dart', 'Swift', 'Kotlin', 'Go', 'Rust', 'Dart', 'Scala', 'R', 'Objective-C'
+  'PowerShell', 'Perl', 'Lua', 'Haskell', 'Clojure', 'Elixir', 'Erlang'
 ].filter((value, index, self) => self.indexOf(value) === index).sort();
 
 const Search = () => {
@@ -49,7 +48,11 @@ const Search = () => {
     e.preventDefault();
     
     // Validate at least one search parameter is provided
-    if (!searchParams.username && !searchParams.location && !searchParams.minRepos && !searchParams.language) {
+    const hasSearchCriteria = Object.values(searchParams).some(
+      value => value && value.toString().trim() !== ''
+    );
+    
+    if (!hasSearchCriteria) {
       setError('Please provide at least one search parameter');
       return;
     }
@@ -70,12 +73,21 @@ const Search = () => {
       }
       
       setResults({
-        ...data,
-        page: 1 // Reset to first page
+        items: data.items || [],
+        totalCount: data.total_count || 0,
+        page: 1,
+        perPage: results.perPage,
+        hasMore: data.items && data.total_count ? data.items.length < data.total_count : false
       });
     } catch (err) {
       console.error('Search error:', err);
       setError('An error occurred while searching. Please try again.');
+      setResults(prev => ({
+        ...prev,
+        items: [],
+        totalCount: 0,
+        hasMore: false
+      }));
     } finally {
       setIsLoading(false);
     }
@@ -102,9 +114,13 @@ const Search = () => {
       
       // Combine existing items with new items
       setResults(prev => ({
-        ...data,
-        items: [...prev.items, ...data.items],
-        page: nextPage
+        items: [...prev.items, ...(data.items || [])],
+        totalCount: data.total_count || prev.totalCount,
+        page: nextPage,
+        perPage: results.perPage,
+        hasMore: data.items && data.total_count 
+          ? (prev.items.length + data.items.length) < data.total_count 
+          : false
       }));
     } catch (err) {
       console.error('Error loading more results:', err);
@@ -112,6 +128,11 @@ const Search = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+  
+  // Toggle advanced search options
+  const toggleAdvancedSearch = () => {
+    setShowAdvanced(!showAdvanced);
   };
   
   // Reset search
@@ -131,73 +152,6 @@ const Search = () => {
     });
     setError('');
   };
-  const [showAdvanced, setShowAdvanced] = useState(false);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSearchParams(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Basic validation
-    if (!searchParams.username.trim() && !searchParams.location && !searchParams.language) {
-      setError('Please enter at least one search criteria');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-    
-    try {
-      const { data, error } = await searchUsers({
-        username: searchParams.username,
-        location: searchParams.location,
-        minRepos: searchParams.minRepos || 0,
-        language: searchParams.language,
-        page: 1,
-        perPage: results.perPage
-      });
-      
-      if (error) {
-        setError(error);
-        setResults(prev => ({ ...prev, items: [], totalCount: 0 }));
-      } else {
-        setResults({
-          items: data.items,
-          totalCount: data.total_count,
-          page: 1,
-          perPage: results.perPage,
-          hasMore: data.items.length < data.total_count
-        });
-      }
-    } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
-      setResults(prev => ({ ...prev, items: [], totalCount: 0 }));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadMore = async () => {
-    if (loading || !results.hasMore) return;
-    
-    setLoading(true);
-    
-    try {
-      const nextPage = results.page + 1;
-      const { data, error } = await searchUsers({
-        username: searchParams.username,
-        location: searchParams.location,
-        minRepos: searchParams.minRepos || 0,
-        language: searchParams.language,
-        page: nextPage,
-        perPage: results.perPage
-      });
       
       if (!error && data) {
         setResults(prev => ({
