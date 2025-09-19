@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { setupCache } from 'axios-cache-interceptor';
 
-const GITHUB_API_URL = 'https://api.github.com';
+const GITHUB_API_URL = 'https://api.github.com/search/users?q';
 
 // Create a custom axios instance with cache
 const axiosInstance = axios.create({
