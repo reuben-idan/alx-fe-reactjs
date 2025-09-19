@@ -56,17 +56,31 @@ const UserCard = ({ user }) => {
           <div className="flex-1 w-full">
             <div className="flex flex-col md:flex-row md:items-start md:justify-between">
               <div className="text-center md:text-left">
-                <h2 className="text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors">
-                  {user.name || user.login}
-                </h2>
+                <div className="flex items-center space-x-2">
+                  <h2 className="text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors">
+                    {user.name || user.login}
+                  </h2>
+                  <a 
+                    href={user.html_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 transition-colors"
+                    title="View on GitHub"
+                  >
+                    <FiGithub className="h-5 w-5" />
+                  </a>
+                </div>
+                <div className="text-sm text-gray-600">
+                  <span>@{user.login}</span>
+                </div>
                 <a 
                   href={user.html_url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline text-sm flex items-center justify-center md:justify-start space-x-1"
+                  className="mt-1 inline-flex items-center text-sm text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-md transition-colors"
                 >
-                  <FiGithub className="h-4 w-4" />
-                  <span>@{user.login}</span>
+                  <FiGithub className="mr-1 h-3 w-3" />
+                  <span>View Profile</span>
                 </a>
               </div>
               
