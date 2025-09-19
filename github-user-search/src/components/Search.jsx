@@ -64,12 +64,21 @@ const Search = () => {
       )}
 
       {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
-          <p>{error}</p>
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md" role="alert">
+          <p className="font-medium">
+            {error.includes('not found') ? 'Looks like we can\'t find the user' : error}
+          </p>
+          {error.includes('not found') && (
+            <p className="mt-1 text-sm">Please check the username and try again.</p>
+          )}
         </div>
       )}
 
-      {userData && <UserCard user={userData} />}
+      {userData && (
+        <div className="mt-8">
+          <UserCard user={userData} />
+        </div>
+      )}
     </div>
   );
 };
