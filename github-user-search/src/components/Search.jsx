@@ -95,6 +95,47 @@ const Search = () => {
     }
   };
   
+  // State to store detailed user data
+  const [userDetails, setUserDetails] = useState({});
+  
+  // Fetch detailed user data from GitHub API
+  const fetchUserData = async (username) => {
+    if (!username) return null;
+    
+    try {
+      // Check if we already have the data
+      if (userDetails[username]) {
+        return userDetails[username];
+      }
+      
+      const response = await fetch(`https://api.github.com/users/${username}`);
+      if (!response.ok) {
+        throw new Error('User not found');
+      }
+      const data = await response.json();
+      
+      // Cache the user data
+      setUserDetails(prev => ({
+        ...prev,
+        [username]: data
+      }));
+      
+      return data;
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      return null;
+    }
+  };
+  
+  // Function to handle user card click and fetch additional data
+  const handleUserCardClick = async (username) => {
+    if (!userDetails[username]) {
+      setIsLoading(true);
+      await fetchUserData(username);
+      setIsLoading(false);
+    }
+  };
+
   // Handle loading more results
   const loadMoreResults = async () => {
     if (isLoading || !results.hasMore) return;
@@ -333,8 +374,17 @@ const Search = () => {
           
           <div className="grid gap-6 md:grid-cols-2">
             {results.items.map((user) => (
-              <div key={user.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                <UserCard user={user} />
+              <div 
+                key={user.id} 
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                onClick={() => handleUserCardClick(user.login)}
+              >
+                <UserCard 
+                  user={{
+                    ...user,
+                    ...(userDetails[user.login] || {})
+                  }} 
+                />
               </div>
             ))}
           </div>
