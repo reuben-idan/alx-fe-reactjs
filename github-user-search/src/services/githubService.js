@@ -249,10 +249,9 @@ const fetchUsersDetails = async (users) => {
           })
           .catch(error => {
             if (axios.isCancel(error)) {
-              console.log('Request canceled:', error.message);
               return null;
             }
-            console.error(`Error fetching user ${user.login}:`, error);
+            // Error is already logged by the interceptor
             return { 
               ...user, 
               error: error.response?.status === 404 ? 'User not found' : 'Failed to fetch details',
@@ -273,11 +272,10 @@ const fetchUsersDetails = async (users) => {
     
     return results;
   } catch (error) {
-    if (axios.isCancel(error)) {
-      console.log('User details fetch canceled:', error.message);
+    if (!axios.isCancel(error)) {
+      // Error is already logged by the interceptor
       return [];
     }
-    console.error('Error in fetchUsersDetails:', error);
     return [];
   }
 };
