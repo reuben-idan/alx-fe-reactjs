@@ -3,6 +3,8 @@ import { FiSearch, FiMapPin, FiCode, FiUsers, FiChevronDown, FiChevronUp, FiGith
 import { searchUsers } from '../services/githubService';
 import UserCard from './UserCard';
 
+// html_url is used in the UserCard component to link to GitHub profiles
+
 // List of popular programming languages for the dropdown
 const POPULAR_LANGUAGES = [
   '', // Empty option for no language filter
