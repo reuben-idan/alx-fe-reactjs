@@ -65,17 +65,37 @@ const Search = () => {
 
       {error && (
         <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md" role="alert">
-          <p className="font-medium">
-            {error.includes('not found') ? 'Looks like we can\'t find the user' : error}
-          </p>
-          {error.includes('not found') && (
-            <p className="mt-1 text-sm">Please check the username and try again.</p>
-          )}
+          <div className="flex items-center">
+            <img 
+              src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" 
+              alt="GitHub logo" 
+              className="h-8 w-8 mr-3"
+            />
+            <div>
+              <p className="font-medium">
+                {error.includes('not found') ? 'Looks like we cant find the user' : error}
+              </p>
+              {error.includes('not found') && (
+                <p className="mt-1 text-sm">Please check the username and try again.</p>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
       {userData && (
         <div className="mt-8">
+          <div className="flex items-center mb-6">
+            <img 
+              src={userData.avatar_url} 
+              alt={userData.login}
+              className="w-16 h-16 rounded-full border-2 border-gray-200 mr-4"
+            />
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800">{userData.name || userData.login}</h2>
+              <p className="text-gray-600">@{userData.login}</p>
+            </div>
+          </div>
           <UserCard user={userData} />
         </div>
       )}
