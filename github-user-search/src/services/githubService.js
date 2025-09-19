@@ -82,7 +82,7 @@ api.interceptors.response.use(
 );
 
 // Cancel token source for request cancellation
-const cancelTokenSource = axios.CancelToken.source();
+export const cancelTokenSource = axios.CancelToken.source();
 
 // Function to cancel all pending requests
 export const cancelAllRequests = (message = 'Request canceled by user') => {
