@@ -13,10 +13,10 @@ function AddRecipeForm() {
   const [submitMessage, setSubmitMessage] = useState('');
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Extract target.value for form handling
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: e.target.value // Use target.value directly
     }));
 
     // Clear error for this field when user starts typing
@@ -182,7 +182,7 @@ function AddRecipeForm() {
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical ${
                   errors.instructions ? 'border-red-300 bg-red-50' : 'border-gray-300'
                 }`}
-                placeholder="Step 1: Preheat oven to 350°F...&#10;Step 2: In a large bowl, cream together butter and sugars...&#10;Step 3: Beat in eggs and vanilla..."
+                placeholder="Follow these steps:&#10;Step 1: Preheat oven to 350°F...&#10;Step 2: In a large bowl, cream together butter and sugars...&#10;Step 3: Beat in eggs and vanilla..."
               />
               {errors.instructions && (
                 <p className="mt-1 text-sm text-red-600">{errors.instructions}</p>
