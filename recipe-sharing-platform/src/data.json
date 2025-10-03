@@ -3,36 +3,159 @@
     "id": 1,
     "title": "Spaghetti Carbonara",
     "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
-    "image": "https://via.placeholder.com/150"
+    "image": "https://via.placeholder.com/400",
+    "ingredients": [
+      "400g spaghetti",
+      "200g pancetta or guanciale",
+      "4 large eggs",
+      "100g Pecorino Romano cheese",
+      "Black pepper to taste",
+      "Salt for pasta water"
+    ],
+    "instructions": [
+      "Bring a large pot of salted water to boil and cook spaghetti according to package directions until al dente.",
+      "While pasta cooks, cut pancetta into small cubes and cook in a large skillet over medium heat until crispy, about 5-7 minutes.",
+      "In a bowl, whisk together eggs and grated Pecorino Romano cheese. Season with black pepper.",
+      "Reserve 1 cup of pasta cooking water before draining.",
+      "Add drained hot pasta to the skillet with pancetta and toss to combine.",
+      "Remove from heat and quickly stir in the egg mixture, adding pasta water gradually until creamy.",
+      "Serve immediately with extra cheese and black pepper."
+    ]
   },
   {
     "id": 2,
     "title": "Chicken Tikka Masala",
     "summary": "Chunks of grilled chicken (tikka) cooked in a smooth buttery & creamy tomato based gravy.",
-    "image": "https://via.placeholder.com/150"
+    "image": "https://via.placeholder.com/400",
+    "ingredients": [
+      "800g boneless chicken thighs, cut into chunks",
+      "200g plain yogurt",
+      "2 tbsp ginger-garlic paste",
+      "2 tbsp garam masala",
+      "1 tbsp turmeric",
+      "1 tbsp cumin",
+      "2 tbsp chili powder",
+      "2 onions, finely chopped",
+      "4 tomatoes, pureed",
+      "200ml heavy cream",
+      "4 tbsp butter",
+      "Fresh cilantro for garnish"
+    ],
+    "instructions": [
+      "In a bowl, mix yogurt, ginger-garlic paste, garam masala, turmeric, cumin, and chili powder. Add chicken and marinate for at least 2 hours.",
+      "Preheat grill or oven to high heat. Thread chicken onto skewers and grill until charred and cooked through, about 15-20 minutes.",
+      "In a large pan, heat butter and sauté onions until golden brown.",
+      "Add tomato puree and cook until the mixture thickens and oil separates.",
+      "Stir in heavy cream and simmer for 5 minutes.",
+      "Add grilled chicken pieces to the sauce and simmer for another 10 minutes.",
+      "Garnish with fresh cilantro and serve with rice or naan."
+    ]
   },
   {
     "id": 3,
     "title": "Beef Wellington",
     "summary": "A classic dish of beef tenderloin coated with mushroom duxelles and wrapped in puff pastry.",
-    "image": "https://via.placeholder.com/150"
+    "image": "https://via.placeholder.com/400",
+    "ingredients": [
+      "1kg beef tenderloin",
+      "500g mushrooms, finely chopped",
+      "4 shallots, finely chopped",
+      "4 garlic cloves, minced",
+      "500g puff pastry",
+      "200g prosciutto slices",
+      "2 tbsp Dijon mustard",
+      "4 egg yolks, beaten",
+      "Salt and pepper",
+      "2 tbsp olive oil"
+    ],
+    "instructions": [
+      "Season beef tenderloin with salt and pepper. Heat oil in a pan and sear beef on all sides until browned. Brush with mustard and let cool.",
+      "In the same pan, cook mushrooms, shallots, and garlic until all moisture evaporates. This is your duxelles.",
+      "Lay out prosciutto slices overlapping on plastic wrap. Spread duxelles evenly over prosciutto.",
+      "Place seared beef on top of duxelles and roll tightly using plastic wrap. Chill for 30 minutes.",
+      "Roll out puff pastry and place beef roll in center. Wrap pastry around beef, sealing edges with egg wash.",
+      "Brush entire pastry with egg wash and score decorative patterns on top.",
+      "Bake at 200°C for 40-45 minutes until pastry is golden and beef reaches 55°C internal temperature.",
+      "Rest for 10 minutes before slicing and serving."
+    ]
   },
   {
     "id": 4,
     "title": "Caesar Salad",
     "summary": "Fresh romaine lettuce with Caesar dressing, croutons, and parmesan cheese.",
-    "image": "https://via.placeholder.com/150"
+    "image": "https://via.placeholder.com/400",
+    "ingredients": [
+      "2 heads romaine lettuce",
+      "1 cup croutons",
+      "1/2 cup Parmesan cheese, grated",
+      "4 anchovy fillets",
+      "2 garlic cloves",
+      "2 egg yolks",
+      "1 tbsp Dijon mustard",
+      "1/4 cup olive oil",
+      "2 tbsp lemon juice",
+      "Salt and pepper to taste"
+    ],
+    "instructions": [
+      "Wash and dry romaine lettuce thoroughly. Tear into bite-sized pieces.",
+      "In a blender, combine anchovies, garlic, egg yolks, mustard, lemon juice, salt, and pepper.",
+      "Slowly drizzle in olive oil while blending to create a smooth emulsion.",
+      "Toss lettuce with dressing until well coated.",
+      "Add croutons and grated Parmesan cheese.",
+      "Toss gently to combine and serve immediately."
+    ]
   },
   {
     "id": 5,
     "title": "Chocolate Soufflé",
     "summary": "A light and airy French dessert made with chocolate, eggs, and sugar.",
-    "image": "https://via.placeholder.com/150"
+    "image": "https://via.placeholder.com/400",
+    "ingredients": [
+      "200g dark chocolate",
+      "6 large eggs, separated",
+      "100g sugar",
+      "30g butter",
+      "1 tbsp flour",
+      "Pinch of salt",
+      "Powdered sugar for dusting"
+    ],
+    "instructions": [
+      "Preheat oven to 190°C. Butter ramekins and dust with sugar.",
+      "Melt chocolate and butter together in a double boiler until smooth.",
+      "Whisk egg yolks with half the sugar until pale and thick.",
+      "Stir melted chocolate into egg yolk mixture.",
+      "In a clean bowl, beat egg whites with salt until foamy.",
+      "Gradually add remaining sugar and beat until stiff peaks form.",
+      "Gently fold egg whites into chocolate mixture in thirds.",
+      "Fill ramekins 3/4 full and bake for 18-20 minutes until risen and set on outside but soft in center.",
+      "Dust with powdered sugar and serve immediately."
+    ]
   },
   {
     "id": 6,
     "title": "Margherita Pizza",
     "summary": "Simple yet delicious pizza with tomato sauce, fresh mozzarella, and basil leaves.",
-    "image": "https://via.placeholder.com/150"
+    "image": "https://via.placeholder.com/400",
+    "ingredients": [
+      "Pizza dough for one 12-inch pizza",
+      "200g fresh mozzarella, sliced",
+      "200g tomato sauce",
+      "Fresh basil leaves",
+      "2 tbsp olive oil",
+      "1 garlic clove, minced",
+      "Salt and pepper",
+      "Flour for dusting"
+    ],
+    "instructions": [
+      "Preheat oven to 250°C with pizza stone if available.",
+      "Roll out pizza dough on floured surface to 12-inch circle.",
+      "Mix tomato sauce with minced garlic, salt, and pepper.",
+      "Spread sauce evenly over dough, leaving 1-inch border.",
+      "Arrange mozzarella slices on top of sauce.",
+      "Drizzle with olive oil and season with salt and pepper.",
+      "Bake for 10-12 minutes until crust is golden and cheese is bubbly.",
+      "Remove from oven and immediately top with fresh basil leaves.",
+      "Let cool slightly before slicing and serving."
+    ]
   }
 ]
