@@ -7,7 +7,7 @@ function HomePage() {
     // Load recipe data from the JSON file
     const loadRecipes = async () => {
       try {
-        const response = await fetch('/data.json');
+        const response = await fetch('./data.json');
         const data = await response.json();
         setRecipes(data);
       } catch (error) {
