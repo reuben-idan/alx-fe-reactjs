@@ -108,11 +108,11 @@ function AddRecipeForm() {
       </nav>
 
       {/* Form Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Share Your Recipe</h2>
-            <p className="text-gray-600">Add a delicious recipe to our community collection</p>
+      <div className="max-w-4xl mx-auto px-4 py-8 md:px-6 md:py-10">
+        <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 md:p-10">
+          <div className="mb-8 md:mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Share Your Recipe</h2>
+            <p className="text-gray-600 text-sm md:text-base">Add a delicious recipe to our community collection</p>
           </div>
 
           {submitMessage && (
