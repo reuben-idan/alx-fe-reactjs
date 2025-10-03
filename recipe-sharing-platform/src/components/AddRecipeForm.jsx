@@ -125,10 +125,10 @@ function AddRecipeForm() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
             {/* Recipe Title */}
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="title" className="block text-sm md:text-base font-medium text-gray-700 mb-2">
                 Recipe Title *
               </label>
               <input
@@ -137,7 +137,7 @@ function AddRecipeForm() {
                 name="title"
                 value={formData.title}
                 onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                className={`w-full px-4 py-3 md:py-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm md:text-base ${
                   errors.title ? 'border-red-300 bg-red-50' : 'border-gray-300'
                 }`}
                 placeholder="e.g., Classic Chocolate Chip Cookies"
@@ -149,7 +149,7 @@ function AddRecipeForm() {
 
             {/* Ingredients */}
             <div>
-              <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="ingredients" className="block text-sm md:text-base font-medium text-gray-700 mb-2">
                 Ingredients * (one per line)
               </label>
               <textarea
@@ -158,7 +158,7 @@ function AddRecipeForm() {
                 value={formData.ingredients}
                 onChange={handleInputChange}
                 rows={6}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical ${
+                className={`w-full px-4 py-3 md:py-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical text-sm md:text-base ${
                   errors.ingredients ? 'border-red-300 bg-red-50' : 'border-gray-300'
                 }`}
                 placeholder="2 cups all-purpose flour&#10;1 cup brown sugar&#10;1/2 cup butter&#10;2 eggs&#10;1 tsp vanilla extract&#10;1 cup chocolate chips"
@@ -170,7 +170,7 @@ function AddRecipeForm() {
 
             {/* Instructions */}
             <div>
-              <label htmlFor="instructions" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="instructions" className="block text-sm md:text-base font-medium text-gray-700 mb-2">
                 Preparation Instructions *
               </label>
               <textarea
@@ -179,7 +179,7 @@ function AddRecipeForm() {
                 value={formData.instructions}
                 onChange={handleInputChange}
                 rows={8}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical ${
+                className={`w-full px-4 py-3 md:py-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical text-sm md:text-base ${
                   errors.instructions ? 'border-red-300 bg-red-50' : 'border-gray-300'
                 }`}
                 placeholder="Follow these steps:&#10;Step 1: Preheat oven to 350°F...&#10;Step 2: In a large bowl, cream together butter and sugars...&#10;Step 3: Beat in eggs and vanilla..."
@@ -190,11 +190,11 @@ function AddRecipeForm() {
             </div>
 
             {/* Submit Button */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 md:pt-6">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`flex-1 sm:flex-none sm:px-8 py-3 rounded-lg font-medium transition-all duration-200 ${
+                className={`flex-1 sm:flex-none sm:px-8 md:px-10 py-3 md:py-4 rounded-lg font-medium transition-all duration-200 text-sm md:text-base ${
                   isSubmitting
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl'
@@ -215,7 +215,7 @@ function AddRecipeForm() {
 
               <Link
                 to="/"
-                className="flex-1 sm:flex-none sm:px-8 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-colors duration-200 text-center"
+                className="flex-1 sm:flex-none sm:px-8 md:px-10 py-3 md:py-4 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium transition-colors duration-200 text-center text-sm md:text-base"
               >
                 Cancel
               </Link>
