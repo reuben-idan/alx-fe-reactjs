@@ -16,6 +16,7 @@ const PostsComponent = () => {
   const {
     data: posts,
     isLoading,
+    isError,
     error,
     refetch,
     isFetching
