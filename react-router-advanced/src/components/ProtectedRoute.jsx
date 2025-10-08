@@ -1,19 +1,28 @@
 import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 const ProtectedRoute = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const { isAuthenticated, login, logout } = useAuth();
+  const location = useLocation();
   const [showLogin, setShowLogin] = React.useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setIsAuthenticated(true);
-    setShowLogin(false);
+    const formData = new FormData(e.target);
+    const username = formData.get('username');
+    const password = formData.get('password');
+
+    if (login(username, password)) {
+      setShowLogin(false);
+    }
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    logout();
   };
 
+  // If not authenticated, redirect to home with return path
   if (!isAuthenticated) {
     if (!showLogin) {
       return (
@@ -33,11 +42,11 @@ const ProtectedRoute = ({ children }) => {
         <form onSubmit={handleLogin}>
           <div className="form-group">
             <label htmlFor="username">Username:</label>
-            <input type="text" id="username" required />
+            <input type="text" id="username" name="username" required />
           </div>
           <div className="form-group">
             <label htmlFor="password">Password:</label>
-            <input type="password" id="password" required />
+            <input type="password" id="password" name="password" required />
           </div>
           <button type="submit" className="login-button">Login</button>
           <button type="button" onClick={() => setShowLogin(false)} className="cancel-button">

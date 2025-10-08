@@ -6,30 +6,33 @@ import Profile from './components/Profile';
 import BlogPost from './components/BlogPost';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navigation from './components/Navigation';
+import { AuthProvider } from './hooks/useAuth';
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="app">
-        <Navigation />
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile/*" element={<Profile />} />
-            <Route path="/blog/:id" element={<BlogPost />} />
-            <Route path="/protected" element={
-              <ProtectedRoute>
-                <div className="protected-page">
-                  <h1>Protected Content</h1>
-                  <p>This content is only visible to authenticated users.</p>
-                  <p>You have successfully logged in and can access this protected route!</p>
-                </div>
-              </ProtectedRoute>
-            } />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <div className="app">
+          <Navigation />
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/profile/*" element={<Profile />} />
+              <Route path="/blog/:id" element={<BlogPost />} />
+              <Route path="/protected" element={
+                <ProtectedRoute>
+                  <div className="protected-page">
+                    <h1>Protected Content</h1>
+                    <p>This content is only visible to authenticated users.</p>
+                    <p>You have successfully logged in and can access this protected route!</p>
+                  </div>
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </main>
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
