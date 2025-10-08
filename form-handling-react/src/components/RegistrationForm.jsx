@@ -2,21 +2,20 @@ import React, { useState } from 'react';
 import './RegistrationForm.css';
 
 const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
-  });
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+
+    // Update individual state variables
+    if (name === 'username') setUsername(value);
+    if (name === 'email') setEmail(value);
+    if (name === 'password') setPassword(value);
 
     // Clear error for this field when user starts typing
     if (errors[name]) {
@@ -30,19 +29,19 @@ const RegistrationForm = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.username.trim()) {
+    if (!username.trim()) {
       newErrors.username = 'Username is required';
     }
 
-    if (!formData.email.trim()) {
+    if (!email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Email is invalid';
     }
 
-    if (!formData.password.trim()) {
+    if (!password.trim()) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
+    } else if (password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
 
@@ -61,6 +60,7 @@ const RegistrationForm = () => {
 
     try {
       // Simulate API call
+      const formData = { username, email, password };
       const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
         method: 'POST',
         headers: {
@@ -72,11 +72,9 @@ const RegistrationForm = () => {
       if (response.ok) {
         alert('Registration successful!');
         // Reset form
-        setFormData({
-          username: '',
-          email: '',
-          password: ''
-        });
+        setUsername('');
+        setEmail('');
+        setPassword('');
       } else {
         alert('Registration failed. Please try again.');
       }
@@ -99,7 +97,7 @@ const RegistrationForm = () => {
               type="text"
               id="username"
               name="username"
-              value={formData.username}
+              value={username}
               onChange={handleInputChange}
               className={errors.username ? 'error' : ''}
             />
@@ -112,7 +110,7 @@ const RegistrationForm = () => {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
+              value={email}
               onChange={handleInputChange}
               className={errors.email ? 'error' : ''}
             />
@@ -125,7 +123,7 @@ const RegistrationForm = () => {
               type="password"
               id="password"
               name="password"
-              value={formData.password}
+              value={password}
               onChange={handleInputChange}
               className={errors.password ? 'error' : ''}
             />
