@@ -5,25 +5,21 @@ import './formikForm.css';
 
 // Validation schema
 const RegistrationSchema = Yup.object().shape({
-  username: Yup.string()
-    .required('Username is required')
+  username: Yup.string().required('Username is required')
     .min(3, 'Username must be at least 3 characters')
     .max(20, 'Username must not exceed 20 characters'),
 
-  email: Yup.string()
-    .required('Email is required')
+  email: Yup.string().required('Email is required')
     .email('Invalid email format'),
 
-  password: Yup.string()
-    .required('Password is required')
+  password: Yup.string().required('Password is required')
     .min(6, 'Password must be at least 6 characters')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
       'Password must contain at least one uppercase letter, one lowercase letter, and one number'
     ),
 
-  confirmPassword: Yup.string()
-    .required('Please confirm your password')
+  confirmPassword: Yup.string().required('Please confirm your password')
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
 });
 
