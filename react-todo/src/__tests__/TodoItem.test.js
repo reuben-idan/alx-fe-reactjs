@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import TodoItem from '../components/TodoItem';
+const React = require('react');
+const { render, screen, fireEvent } = require('@testing-library/react');
+require('@testing-library/jest-dom');
+const TodoItem = require('../components/TodoItem');
 
 describe('TodoItem Component', () => {
   const mockTodo = {

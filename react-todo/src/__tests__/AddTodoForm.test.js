@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import AddTodoForm from '../components/AddTodoForm';
+const React = require('react');
+const { render, screen, fireEvent } = require('@testing-library/react');
+require('@testing-library/jest-dom');
+const AddTodoForm = require('../components/AddTodoForm');
 
 describe('AddTodoForm Component', () => {
   test('renders form elements correctly', () => {
