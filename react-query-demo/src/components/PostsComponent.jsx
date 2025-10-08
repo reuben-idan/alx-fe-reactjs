@@ -27,6 +27,7 @@ const PostsComponent = () => {
     staleTime: 5 * 60 * 1000,
     // Keep data in cache for 10 minutes
     gcTime: 10 * 60 * 1000,
+    cacheTime: 10 * 60 * 1000,
     // Prevent refetch when window regains focus
     refetchOnWindowFocus: false,
     // Keep previous data while fetching new data
