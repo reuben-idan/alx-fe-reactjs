@@ -6,7 +6,9 @@ module.exports = {
     '<rootDir>/src/**/__tests__/**/*.{js,jsx}',
     '<rootDir>/src/**/*.{test,spec}.{js,jsx}'
   ],
-  transform: {},
+  transform: {
+    '^.+\\.(js|jsx)$': 'babel-jest'
+  },
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
   }

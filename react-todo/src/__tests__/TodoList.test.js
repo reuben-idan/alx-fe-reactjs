@@ -1,33 +1,39 @@
-const React = require('react');
-const { render, screen, fireEvent, waitFor } = require('@testing-library/react');
-require('@testing-library/jest-dom');
-const TodoList = require('../components/TodoList');
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import TodoList from '../components/TodoList';
 
 // Mock the child components for isolated testing
-jest.mock('../components/AddTodoForm', () => {
-  return function MockAddTodoForm({ onAddTodo }) {
+jest.mock('../components/AddTodoForm', () => ({
+  __esModule: true,
+  default: function MockAddTodoForm({ onAddTodo }) {
+    const [text, setText] = React.useState('');
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (text.trim()) {
+        onAddTodo(text.trim());
+        setText('');
+      }
+    };
+
     return (
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        const input = e.target.elements['todo-input'];
-        if (input && input.value.trim()) {
-          onAddTodo(input.value.trim());
-          input.value = '';
-        }
-      }}>
+      <form onSubmit={handleSubmit}>
         <input
           name="todo-input"
           data-testid="todo-input"
-          defaultValue=""
+          value={text}
+          onChange={(e) => setText(e.target.value)}
         />
         <button type="submit" data-testid="add-button">Add Todo</button>
       </form>
     );
-  };
-});
+  }
+}));
 
-jest.mock('../components/TodoItem', () => {
-  return function MockTodoItem({ todo, onToggle, onDelete }) {
+jest.mock('../components/TodoItem', () => ({
+  __esModule: true,
+  default: function MockTodoItem({ todo, onToggle, onDelete }) {
     return (
       <div data-testid={`todo-item-${todo.id}`} className={todo.completed ? 'completed' : ''}>
         <span
@@ -42,8 +48,8 @@ jest.mock('../components/TodoItem', () => {
         </button>
       </div>
     );
-  };
-});
+  }
+}));
 
 describe('TodoList Component', () => {
   test('renders TodoList with initial todos', () => {
@@ -176,23 +182,29 @@ describe('TodoList Component', () => {
     const EmptyTodoList = () => {
       const [todos, setTodos] = React.useState([]);
 
-      return React.createElement('div', { className: 'todo-list-container' },
-        React.createElement('h2', null, 'My Todo List'),
-        React.createElement('div', { className: 'todo-list' },
-          todos.length === 0 ?
-            React.createElement('p', { className: 'no-todos' }, 'No todos yet. Add one above!') :
-            todos.map(todo => React.createElement('div', { key: todo.id }, todo.text))
-        )
+      return (
+        <div className="todo-list-container">
+          <h2>My Todo List</h2>
+          <div className="todo-list">
+            {todos.length === 0 ? (
+              <p className="no-todos">No todos yet. Add one above!</p>
+            ) : (
+              todos.map(todo => (
+                <div key={todo.id}>{todo.text}</div>
+              ))
+            )}
+          </div>
+        </div>
       );
     };
 
-    render(React.createElement(EmptyTodoList));
+    render(<EmptyTodoList />);
 
     expect(screen.getByText('No todos yet. Add one above!')).toBeInTheDocument();
   });
 
   test('prevents adding empty todos', async () => {
-    render(React.createElement(TodoList));
+    render(<TodoList />);
 
     const input = screen.getByTestId('todo-input');
     const addButton = screen.getByTestId('add-button');
